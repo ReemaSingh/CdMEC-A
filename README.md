@@ -53,7 +53,8 @@ python plotting/arg_mge_plotter.py -i ./results -o ./sample_plots
 
 ## Citation
 If you use CdMEC-A in your research, please cite:
-Reema Singh. (2026). CdMEC-A: A pipeline for ARG-MGE contextual analysis.
+
+Reema Singh (2026). CdMEC-A: A pipeline for ARG-MGE contextual analysis.
 
 
 
