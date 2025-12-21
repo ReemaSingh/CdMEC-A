@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data/Results (Optional: keep repo light)
+results/
+cdmec_analysis_reports/
+*.log
+*.tsv
+*.csv
