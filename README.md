@@ -48,6 +48,17 @@ Place your FASTA files in a folder and run:
 ```bash
 python bin/cdmec_analyzer.py -i ./test_samples -o ./results
 ```
+### Parallelization Options
+CdMEC-A allows for dual-layer parallelization to optimize throughput:
+
+* **`-t` (Sample Threads):** Number of genomic samples to process simultaneously. 
+* **`-bt` (BLAST Threads):** Number of CPU cores assigned to *each* BLAST process (the `-num_threads` parameter in BLAST+).
+
+**Example:**
+To process 2 samples at a time, using 4 CPUs for each BLAST search (Total 8 CPUs):
+```bash
+python bin/cdmec_analyzer.py -i ./samples -o ./results -t 2 -bt 4
+```
 ### 4. Generate Reports & Plots
 ```bash
 # Merge results and create distribution plot
