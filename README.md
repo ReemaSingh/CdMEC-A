@@ -21,12 +21,12 @@ pip install -r requirements.txt
 ### 2. Database Preparation
 CdMEC-A requires specific BLAST databases to function. Follow these steps to prepare them:
 #### 1. Antibiotic Resistance Gene (ARG) Database
-- Download protein_fasta_protein_homolog_model.fasta from the CARD website.
-- Build the database:
+- Download the latest **Protein Homolog Model** fasta file from the [CARD Download Page](https://card.mcmaster.ca/latest/data).
+  * Filename: `protein_fasta_protein_homolog_model.fasta`
+- Place the file in your root directory and build the database:
 ```bash
 makeblastdb -in protein_fasta_protein_homolog_model.fasta -dbtype prot -out card_protein_homolog_db
 ```
-
 #### 2. Mobile Genetic Element (MGE) Database
 This pipeline uses a curated set of *C. difficile* specific mobile elements.
 
