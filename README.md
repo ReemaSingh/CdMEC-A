@@ -26,16 +26,25 @@ CdMEC-A requires specific BLAST databases to function. Follow these steps to pre
 ```bash
 makeblastdb -in protein_fasta_protein_homolog_model.fasta -dbtype prot -out card_protein_homolog_db
 ```
+
 #### 2. Mobile Genetic Element (MGE) Database
-This pipeline uses a curated set of C. difficile MGEs.
-- Combine your MGE fasta sequences into a single file:
+This pipeline uses a curated set of *C. difficile* specific mobile elements.
+
+**Option A: Use Provided Sequences (Recommended)**
+I have included the individual FASTA files in the `data/mge_references/` folder. To build the database, run:
+
 ```bash
-cat *.fasta > combined_C_Diff_mge_nucl.fasta
-```
-- Build the database:
-```bash
+# 1. Combine the individual FASTA files into one master reference
+cat data/mge_references/*.fasta > combined_C_Diff_mge_nucl.fasta
+
+# 2. Build the BLAST database
 makeblastdb -in combined_C_Diff_mge_nucl.fasta -dbtype nucl -out combined_C_Diff_mge_nucl_db -title "C. Difficile MGE Nucleotide Database"
 ```
+Option B: Manual Data Sourcing If you wish to update the sequences or verify the sources, the curated reference set includes:
+
+* **Transposons:** Tn916-like, Tn6194, Tn6218-like, Tn6000, Tn5397, Tn5398, Tn4453a-b, Tn6944.
+* **Integrons/Islands:** CdISt1 (AJ579717.1), CFR_region, and various IS family elements (IS30, ISL3).
+* **Accessions:** AM180356.2, AY350745.1, MG973074.1.
 
 ### 3. Run Analysis
 Place your FASTA files in a folder and run:
