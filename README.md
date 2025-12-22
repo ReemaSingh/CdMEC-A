@@ -57,7 +57,7 @@ CdMEC-A allows for dual-layer parallelization to optimize throughput:
 **Example:**
 To process 2 samples at a time, using 4 CPUs for each BLAST search (Total 8 CPUs):
 ```bash
-python bin/cdmec_analyzer.py -i ./samples -o ./results -t 2 -bt 4
+python bin/cdmec_analyzer.py -i ./test_samples -o ./results -t 2 -bt 4
 ```
 ### 4. Generate Reports & Plots
 ```bash
