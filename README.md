@@ -8,10 +8,19 @@ CdMEC-A is a bioinformatic pipeline designed to analyze the genomic proximity be
 
 ## Quick Start
 
-### 1. Installation
+### 1. Installation and Setup
+#### **Clone the repository:**
 ```bash
 git clone https://github.com/ReemaSingh/CdMEC-A.git
 cd CdMEC-A
+```
+#### Create and activate a virtual environment (Recommended):
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+#### Install dependencies:
+```bash
 pip install -r requirements.txt
 ```
 
