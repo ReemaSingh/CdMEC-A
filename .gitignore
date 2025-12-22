@@ -2,10 +2,20 @@
 __pycache__/
 *.py[cod]
 *$py.class
+venv/
 
-# Data/Results (Optional: keep repo light)
+# Results - Ignore these specifically
 results/
 cdmec_analysis_reports/
+Study_Summary/
 *.log
-*.tsv
+
+# Ignore all CSV/TSV by default...
 *.csv
+*.tsv
+
+# ...BUT allow files inside the example folder so users can test it!
+!example/*.csv
+!example/*.tsv
+!metadata/*.csv
+!metadata/*.tsv
