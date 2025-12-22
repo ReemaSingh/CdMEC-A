@@ -2,9 +2,6 @@
 
 CdMEC-A is a bioinformatic pipeline designed to analyze the genomic proximity between Antibiotic Resistance Genes (ARGs) and Mobile Genetic Elements (MGEs) in *Clostridioides difficile*. It provides a high-throughput workflow from raw FASTA sequences to publication-quality genomic maps.
 
-## License
-This project is licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for details.
-
 ## Prerequisites
 - **Python 3.7+**
 - **NCBI BLAST+** (blastn and blastx must be in your PATH)
@@ -79,10 +76,27 @@ For a quick look at individual sample results, use arg_mge_plotter.py to generat
 python plotting/arg_mge_plotter.py -i ./results -o ./sample_plots
 ```
 
+## Troubleshooting & Special Environments
+
+### Running on HPC Clusters (e.g., Compute Canada/Slurm)
+If you are running this on a cluster that restricts internet access on compute nodes, load the environment before installing:
+
+```bash
+module load python/3.10
+pip install --no-index -r requirements.txt
+```
+
 ## Citation
 If you use CdMEC-A in your research, please cite:
 
 Reema Singh (2026). CdMEC-A: A pipeline for ARG-MGE contextual analysis.
+
+## License
+This project is licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+This is a personal side project. Feedback and contributions are welcome! Please open an issue or contact me at reemasingh.gencompbio@gmail.com
+
 
 
 
