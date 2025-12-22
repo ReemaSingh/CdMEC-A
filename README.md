@@ -13,7 +13,7 @@ This project is licensed under the **GNU General Public License v3.0**. See the 
 
 ### 1. Installation
 ```bash
-git clone [https://github.com/yourusername/CdMEC-A.git](https://github.com/yourusername/CdMEC-A.git)
+git clone https://github.com/ReemaSingh/CdMEC-A.git
 cd CdMEC-A
 pip install -r requirements.txt
 ```
