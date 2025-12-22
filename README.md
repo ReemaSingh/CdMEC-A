@@ -73,7 +73,7 @@ python bin/cdmec_analyzer.py -i ./test_samples -o ./results -t 2 -bt 4
 # Merge results and create distribution plot
 python plotting/master_Collector.py -i ./results -o Study_Summary
 # Generate high-risk mobility stats
-python bin/cdmec_stats_generator.py -i Study_Summary.csv -o Final_Report
+python bin/cdmec_stats_generator.py -i Study_Summary_Master.csv -o Final_Report
 ```
 
 ## Visualizations
