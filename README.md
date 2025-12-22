@@ -8,7 +8,6 @@ This project is licensed under the **GNU General Public License v3.0**. See the 
 ## Prerequisites
 - **Python 3.7+**
 - **NCBI BLAST+** (blastn and blastx must be in your PATH)
-- **Databases:** You will need the CARD database (protein) and an MGE database (nucleotide).
 
 ## Quick Start
 
@@ -18,12 +17,32 @@ git clone [https://github.com/yourusername/CdMEC-A.git](https://github.com/youru
 cd CdMEC-A
 pip install -r requirements.txt
 ```
-### 2. Run Analysis
+
+### 2. Database Preparation
+CdMEC-A requires specific BLAST databases to function. Follow these steps to prepare them:
+#### 1. Antibiotic Resistance Gene (ARG) Database
+- Download protein_fasta_protein_homolog_model.fasta from the CARD website.
+- Build the database:
+```bash
+makeblastdb -in protein_fasta_protein_homolog_model.fasta -dbtype prot -out card_protein_homolog_db
+```
+#### 2. Mobile Genetic Element (MGE) Database
+This pipeline uses a curated set of C. difficile MGEs.
+- Combine your MGE fasta sequences into a single file:
+```bash
+cat *.fasta > combined_C_Diff_mge_nucl.fasta
+```
+- Build the database:
+```bash
+makeblastdb -in combined_C_Diff_mge_nucl.fasta -dbtype nucl -out combined_C_Diff_mge_nucl_db -title "C. Difficile MGE Nucleotide Database"
+```
+
+### 3. Run Analysis
 Place your FASTA files in a folder and run:
 ```bash
 python bin/cdmec_analyzer.py -i ./test_samples -o ./results
 ```
-### 3. Generate Reports & Plots
+### 4. Generate Reports & Plots
 ```bash
 # Merge results and create distribution plot
 python plotting/master_Collector.py -i ./results -o Study_Summary
