@@ -90,6 +90,7 @@ Generated via arg_mge_plotter_Map.py, this script creates high-resolution, fragm
 # Example: Map a specific 50kb window on a contig
 python plotting/arg_mge_plotter_Map.py -i ./results --start 1000 --end 50000 -o ./maps
 ```
+**Note:** When mapping conserved regions (e.g., common transposon backbones), plots from different samples may appear identical if the genetic architecture is conserved across the selected coordinate range.
 ### 3. Sample-Level Histograms
 For a quick look at individual sample results, use arg_mge_plotter.py to generate density plots showing upstream vs. downstream distributions.
 ```bash
