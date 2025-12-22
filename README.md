@@ -1,6 +1,6 @@
 # CdMEC-A: Contextual mDNA Mobile Element Classifier - Analyzer
 
-CdMEC-A is a bioinformatic pipeline designed to analyze the genomic proximity between Antibiotic Resistance Genes (ARGs) and Mobile Genetic Elements (MGEs) in Clostridioides difficile. It provides a high-throughput workflow from raw FASTA sequences to publication-quality genomic maps.
+CdMEC-A is a bioinformatic pipeline designed to analyze the genomic proximity between Antibiotic Resistance Genes (ARGs) and Mobile Genetic Elements (MGEs) in *Clostridioides difficile*. It provides a high-throughput workflow from raw FASTA sequences to publication-quality genomic maps.
 
 ## License
 This project is licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for details.
