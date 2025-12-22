@@ -21,7 +21,7 @@ pip install -r requirements.txt
 ### 2. Run Analysis
 Place your FASTA files in a folder and run:
 ```bash
-python bin/cdmec_analyzer.py -i ./my_fastas -o ./results
+python bin/cdmec_analyzer.py -i ./test_samples -o ./results
 ```
 ### 3. Generate Reports & Plots
 ```bash
