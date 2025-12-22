@@ -82,7 +82,7 @@ CdMEC-A includes a powerful visualization suite to transition from raw data to p
 ### 1. Global Proximity Distribution
 Generated via master_Collector.py, this plot visualizes the spatial relationship between all identified ARGs and MGEs across your entire dataset. It highlights whether genes are predominantly "embedded" within elements or clustered at specific distances.
 ```bash
-python plotting/master_Collector.py -i ./results -o Global_Summary.
+python plotting/master_Collector.py -i ./results -o Global_Summary
 ```
 ### 2. Comparative Genomic Mapping
 Generated via arg_mge_plotter_Map.py, this script creates high-resolution, fragmented maps of specific contigs. It uses a tiered visualization system to prevent overlapping labels and clearly distinguishes between ARGs (Red) and MGEs (Blue).
