@@ -1,6 +1,14 @@
-# CdMEC-A: Contextual mDNA Mobile Element Classifier - Analyzer
+# CdMEC-A (*Clostridioides difficile* Mobile Element Context Analyzer) 
 
-CdMEC-A is a bioinformatic pipeline designed to analyze the genomic proximity between Antibiotic Resistance Genes (ARGs) and Mobile Genetic Elements (MGEs) in *Clostridioides difficile*. It provides a high-throughput workflow from raw FASTA sequences to publication-quality genomic maps.
+CdMEC-A is a high-throughput bioinformatic pipeline designed to analyze the genomic proximity between Antimicrobial Resistance Genes (ARGs) and Mobile Genetic Elements (MGEs) in C. difficile. It provides a seamless workflow from raw FASTA sequences to comprehensive contextual datasets and publication-quality statistical summaries.
+
+## The Acronym
+| Component | Meaning | Description |
+| :--- | :--- | :--- |
+| **Cd** | *Clostridioides difficile* | Specific focus on *C. diff* genomic architecture. |
+| **ME** | Mobile Element | Identifies Transposons, Plasmids, and Integrases. |
+| **C** | Context | Performs 10-kb flanking region spatial analysis. |
+| **-A** | Analyzer | The computational engine for data interpretation. |
 
 ## Prerequisites
 - **Python 3.7+**
@@ -101,7 +109,7 @@ python plotting/arg_mge_plotter.py -i ./results -o ./sample_plots
 
 ## Troubleshooting & Special Environments
 
-### Running on HPC Clusters (e.g., Compute Canada/Slurm)
+### Running on HPC Clusters
 If you are running this on a cluster that restricts internet access on compute nodes, load the environment before installing:
 
 ```bash
