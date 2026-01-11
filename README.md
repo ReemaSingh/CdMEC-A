@@ -112,13 +112,13 @@ python plotting/arg_mge_plotter.py -i ./results -o ./sample_plots
 ### Data Processing
 Run the analysis script to process raw genomic data. This script uses all available CPU cores by default for maximum speed.
 ```bash
-python SignatureDistance.py -p animal_fna_cdmec -e env_fna_cdmec -u human_fna_cdmec --pattern "*.tsv" -w 4
+python bin/SignatureDistance.py -p animal_fna_cdmec -e env_fna_cdmec -u human_fna_cdmec --pattern "*.tsv" -w 4
 ```
 
 ### Visualization
 Generate the spatial distance and conservation heatmaps.
 ```bash
-python OneHealthVisualization.py one_health_spatial_signatures.csv
+python plotting/OneHealthVisualization.py one_health_spatial_signatures.csv
 ```
 
 ## Troubleshooting & Special Environments
