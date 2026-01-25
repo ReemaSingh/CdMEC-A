@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Singh"
+    given-names: "Reema"
+    orcid: "https://orcid.org/0000-0001-7049-5473" 
+title: "CdMEC-A"
+version: "1.0.0"
+date-released: "2026-01-21" # Replace with today's date
+url: "https://github.com/ReemaSingh/CdMEC-A"
+# doi: "00.00000/zenodo.XXXXX" # Add the DOI here AFTER your first Zenodo release
