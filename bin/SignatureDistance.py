@@ -7,7 +7,7 @@ import glob
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
-from scipy import stats # Required for Mode
+from scipy import stats 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="One Health Parallel Analysis (Signature Logic)")
@@ -20,13 +20,14 @@ def parse_args():
 
 def process_single_file(file_path):
     try:
-        # Optimization: Only load necessary columns
+        # Load columns + file source to track prevalence correctly
         df = pd.read_csv(file_path, sep="\t", usecols=["ARG_Name", "Proximity_bp"])
         df.columns = [c.strip() for c in df.columns]
+        # Track which file this came from
+        df['File_Source'] = os.path.basename(file_path)
         return df
     except Exception:
         return pd.DataFrame()
-
 def run_analysis(folders, pattern, max_workers):
     final_rows = []
 
@@ -46,19 +47,22 @@ def run_analysis(folders, pattern, max_workers):
 
         if not results: continue
         host_df = pd.concat(results, ignore_index=True)
-        
-        # --- NORMALIZATION LOGIC ---
-        # Group by gene and calculate stats
+        # --- REVISED CALCULATION LOGIC ---
         summary = host_df.groupby("ARG_Name").agg(
-            # Signature Distance = Most frequent distance (Mode)
+            # Distance Signature
             Signature_Distance_bp=("Proximity_bp", lambda x: stats.mode(x, keepdims=True).mode[0]),
-            # Total Hits = count of all occurrences
-            Total_Hits=("ARG_Name", "size")
+            # Total Count (for Redundancy)
+            Total_Hits=("ARG_Name", "size"),
+            # Unique Files (for Prevalence)
+            Samples_With_Gene=("File_Source", "nunique")
         ).reset_index()
 
-        # CONSERVATION % = (Total Detections / Number of Files) * 100
-        # This restores the 0-200% scale you had previously
-        summary["Conservation_Pct"] = (summary["Total_Hits"] / total_samples) * 100
+        # 1. Prevalence %: Percentage of genomes containing the gene (Max 100%)
+        summary["Prevalence_Pct"] = (summary["Samples_With_Gene"] / total_samples) * 100
+        
+        # 2. Avg Copies: The "Redundancy" / Dosage metric (e.g., 15.4 copies/genome)
+        summary["Avg_Copies_Per_Genome"] = summary["Total_Hits"] / total_samples
+        
         summary["Host"] = host
         summary.rename(columns={"ARG_Name": "Gene"}, inplace=True)
         
@@ -66,8 +70,9 @@ def run_analysis(folders, pattern, max_workers):
 
     if final_rows:
         output_df = pd.concat(final_rows, ignore_index=True)
+        # This will now have the columns your Visualization script expects
         output_df.to_csv("one_health_spatial_signatures.csv", index=False)
-        print("\n[✔] Success: 'one_health_spatial_signatures.csv' created with normalized values.")
+        print("\n Success: 'one_health_spatial_signatures.csv' created with Prevalence and Redundancy metrics.")
 
 if __name__ == "__main__":
     args = parse_args()
