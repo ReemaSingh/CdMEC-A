@@ -112,6 +112,9 @@ python plotting/arg_mge_plotter.py -i ./results -o ./sample_plots
 ### Data Processing
 Run the analysis script to process raw genomic data. This script uses all available CPU cores by default for maximum speed.
 ```bash
+python bin/cdmec_analyzer.py -i ./animal_fna -o ./animal_fna_cdmec
+python bin/cdmec_analyzer.py -i ./env_fna -o ./env_fna_cdmec
+python bin/cdmec_analyzer.py -i ./human_fna -o ./human_fna_cdmec
 python bin/SignatureDistance.py -p animal_fna_cdmec -e env_fna_cdmec -u human_fna_cdmec --pattern "*.tsv" -w 4
 ```
 
