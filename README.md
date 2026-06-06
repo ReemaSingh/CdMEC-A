@@ -137,7 +137,7 @@ pip install --no-index -r requirements.txt
 ## Citation
 If you use CdMEC-A in your research, please cite:
 
-Reema Singh (2026). CdMEC-A: A pipeline for ARG-MGE contextual analysis.
+Reema Singh (2026). CdMEC-A: A pipeline for ARGs-MGEs spatial contextual analysis.GitHub repository:https://github.com/ReemaSingh/CdMEC-A
 
 ## License
 This project is licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for details.
