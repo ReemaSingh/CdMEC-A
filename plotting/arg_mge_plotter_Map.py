@@ -1,4 +1,4 @@
-# CdMEC-A: Contextual mDNA Mobile Element Classifier - Analyzer
+# CdMEC-A: Clostridioides difficile Mobile Element Context Analyzer
 # Copyright (C) 2025 [Dr. Reema Singh]
 # Licensed under the GNU General Public License v3.0
 
