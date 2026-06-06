@@ -1,5 +1,5 @@
-# CdMEC-A: Contextual mDNA Mobile Element Classifier - Analyzer
-# Copyright (C) 2025 [Dr. Reema Singh]
+# CdMEC-A: Clostridioides difficile Mobile Element Context Analyzer
+# Copyright (C) 2025-2026 [Dr. Reema Singh]
 # Licensed under the GNU General Public License v3.0
 
 import matplotlib
@@ -8,6 +8,7 @@ import pandas as pd
 import glob
 import os
 import argparse
+import numpy as np
 import matplotlib.pyplot as plt
 
 def collect_data(input_dir):
@@ -23,35 +24,111 @@ def collect_data(input_dir):
     return pd.concat(all_df, ignore_index=True)
 
 def create_enhanced_plot(df, output_prefix):
-    print(f"--- [STEP 2/3] Generating Publication-Quality Plot ---")
+    print(f"--- [STEP 2/3] Generating Dual-Panel Publication-Quality Plot ---")
     
-    plt.figure(figsize=(12, 7))
+    # Pre-process classifications and handle string variations or missing data safely
+    df['Inferred_Status'] = df['Inferred_Status'].astype(str).str.strip()
     
-    # 1. Create the Histogram
-    # We use more bins (100) for better resolution near 0
-    plt.hist(df['Proximity_bp'], bins=100, color='#2c7bb6', edgecolor='white', alpha=0.8)
+    # Standardize names to match your cluster statistics output format precisely
+    status_counts = {
+        'Chromosomal (Unlinked)': df['Inferred_Status'].str.contains('Chromosomal', case=False, na=False).sum(),
+        'Embedded within MGE': df['Inferred_Status'].str.contains('Embedded', case=False, na=False).sum(),
+        'MGE-Associated (Upstream)': df['Inferred_Status'].str.contains('Upstream', case=False, na=False).sum(),
+        'MGE-Associated (Downstream)': df['Inferred_Status'].str.contains('Downstream', case=False, na=False).sum()
+    }
     
-    # 2. Add the "Embedded" Red Line
-    plt.axvline(0, color='#d7191c', linestyle='--', linewidth=2.5, label='Embedded (0 bp)')
+    # Create a 1-row, 2-column figure layout for a comprehensive genomic overview
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
     
-    # 3. Add Annotation Text
-    plt.text(500, plt.ylim()[1]*0.9, 'Embedded Genes', color='#d7191c', 
-             fontweight='bold', fontsize=12)
+    # -------------------------------------------------------------------------
+    # PANEL A: Categorical Bar Chart (Answers the demand for explicit counts)
+    # -------------------------------------------------------------------------
+    categories = list(status_counts.keys())
+    counts = list(status_counts.values())
+    colors = ['#7f7f7f', '#d7191c', '#2c7bb6', '#fdae61'] # Professional publication palette
     
-    # 4. Professional Labeling
-    plt.title('ARG-MGE Genomic Proximity Distribution', fontsize=16, fontweight='bold', pad=20)
-    plt.xlabel('Proximity to Mobile Genetic Element (bp)', fontsize=13)
-    plt.ylabel('Frequency (Number of Hits)', fontsize=13)
+    bars = ax1.bar(categories, counts, color=colors, edgecolor='black', alpha=0.85, width=0.6)
     
-    # 5. Styling
-    plt.grid(axis='y', linestyle=':', alpha=0.7)
-    plt.xlim(-10000, 10000) # Keep the 10kb window
-    plt.legend(loc='upper right')
+    # Add explicit data counts and percentages on top of every single bar
+    total_args = sum(counts) if sum(counts) > 0 else 1
+    for bar in bars:
+        height = bar.get_height()
+        percentage = (height / total_args) * 100
+        ax1.annotate(f'{int(height)}\n({percentage:.1f}%)',
+                     xy=(bar.get_x() + bar.get_width() / 2, height),
+                     xytext=(0, 5),  # 5 points vertical offset
+                     textcoords="offset points",
+                     ha='center', va='bottom', fontsize=10, fontweight='bold')
+                     
+    ax1.set_title('A: Categorical Structural Classification Counts', fontsize=13, fontweight='bold', pad=15)
+    ax1.set_ylabel('Total ARG Count (Frequency)', fontsize=12)
     
-    # Save the file
+    # FIX: Explicitly set the tick positions first to silence the UserWarning permanently
+    ax1.set_xticks(range(len(categories)))
+    ax1.set_xticklabels(categories, rotation=25, ha='right', fontsize=10)
+    
+    ax1.grid(axis='y', linestyle=':', alpha=0.5)
+    
+    # Adjust upper limit to make room for annotations comfortably
+    ax1.set_ylim(0, max(counts) * 1.15)
+
+    # -------------------------------------------------------------------------
+    # PANEL B: Flanking Distance Proximity Distribution (Fixes the Squashed Line)
+    # -------------------------------------------------------------------------
+    # Convert proximity column to numeric matrix elements, forcing unlinked tracking strings to NaN
+    df['Proximity_bp_numeric'] = pd.to_numeric(df['Proximity_bp'], errors='coerce')
+    
+    # Biological Filtering Constraint: Exclude unlinked (NaN) AND embedded (0 bp) elements
+    # This isolates flanking neighborhoods to show true spatial variations
+    flanking_distances = df['Proximity_bp_numeric'].dropna()
+    flanking_distances = flanking_distances[flanking_distances != 0]
+    
+    if len(flanking_distances) > 0:
+        # Use absolute distance boundaries for flanking visualization
+        # Set up signed values so upstream can be visualized on the left (-) and downstream on the right (+)
+        signed_distances = []
+        for _, row in df.iterrows():
+            stat = row['Inferred_Status']
+            val = row['Proximity_bp_numeric']
+            if pd.notna(val) and val != 0:
+                if 'Upstream' in stat:
+                    signed_distances.append(-abs(val)) # Represent upstream on the left spectrum
+                elif 'Downstream' in stat:
+                    signed_distances.append(abs(val))  # Represent downstream on the right spectrum
+        
+        # Plot flanking density map using 40 fine-resolution bins
+        n, bins, patches = ax2.hist(signed_distances, bins=40, color='#2c7bb6', edgecolor='white', alpha=0.8, label='Flanking Windows')
+        ax2.set_xlim(-10000, 10000)
+        ax2.axvline(0, color='black', linestyle='-', linewidth=1.2, alpha=0.7) # Operational window separator
+         
+        # This compresses the visual height of the data bars, forcing them below the text zone
+        y_ceiling = ax2.get_ylim()[1]
+        ax2.set_ylim(0, y_ceiling * 1.35)
+        
+        # Recalculate fixed ceiling coordinate after adjustment
+        adjusted_y_ceiling = ax2.get_ylim()[1]
+        
+        # Using 0.95 ensures it hangs perfectly inside the clean top lane
+        ax2.text(-9500, adjusted_y_ceiling * 0.95, '← Upstream Flanking', color='#2c7bb6', 
+                  fontweight='bold', fontsize=11, va='top', ha='left')
+        ax2.text(9500, adjusted_y_ceiling * 0.95, 'Downstream Flanking →', color='#fdae61', 
+                  fontweight='bold', fontsize=11, va='top', ha='right')
+        
+    else:
+        ax2.text(0.5, 0.5, 'No Non-Zero Flanking Loci\nDetected Within 10-kb Window', 
+                 ha='center', va='center', transform=ax2.transAxes, fontsize=12, color='gray')
+
+    ax2.set_title('B: Fine-Resolution Flanking Distance Spectrum', fontsize=12, fontweight='semibold', pad=10)
+    ax2.set_xlabel('Spatial Distance to Reference Target (bp)', fontsize=12)
+    ax2.set_ylabel('Frequency (Number of Hits)', fontsize=12)
+    ax2.grid(axis='y', linestyle=':', alpha=0.5)   
+
+    # Global Master Styling Layout
+    plt.suptitle('ARG-MGE Genomic Proximity Distribution', fontsize=16, fontweight='bold', y=0.98)
+    
     plot_name = f"{output_prefix}_Distribution.png"
     plt.tight_layout()
-    plt.savefig(plot_name, dpi=300) # High resolution for publication
+    plt.savefig(plot_name, dpi=300) # Crisp, high-resolution file for PeerJ print proofs
     print(f"SAVED: {plot_name}")
 
 def main():
